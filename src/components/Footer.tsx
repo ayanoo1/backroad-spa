@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -23,7 +25,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="font-heading text-xl text-deep-taupe mb-4">Quick Links</h4>
-            <nav className="space-y-3">
+            <nav className="space-y-3" aria-label="Footer navigation">
               {[
                 { label: 'Home', href: '#home' },
                 { label: 'About', href: '#about' },
@@ -35,7 +37,7 @@ export default function Footer() {
                 <button
                   key={link.href}
                   onClick={() => scrollToSection(link.href)}
-                  className="block font-paragraph text-base text-deep-taupe/70 hover:text-primary transition-colors"
+                  className="block font-paragraph text-base text-deep-taupe/70 hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1"
                 >
                   {link.label}
                 </button>
@@ -48,12 +50,20 @@ export default function Footer() {
             <h4 className="font-heading text-xl text-deep-taupe mb-4">Contact</h4>
             <div className="space-y-3 font-paragraph text-base text-deep-taupe/70">
               <p>
-                <a href="tel:419-688-4000" className="hover:text-primary transition-colors">
+                <a 
+                  href="tel:419-688-4000" 
+                  className="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1"
+                  aria-label="Call us at 419-688-4000"
+                >
                   419-688-4000
                 </a>
               </p>
               <p>
-                <a href="mailto:Danielle@backroadbeautyandco.com" className="hover:text-primary transition-colors">
+                <a 
+                  href="mailto:Danielle@backroadbeautyandco.com" 
+                  className="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1"
+                  aria-label="Email us at Danielle@backroadbeautyandco.com"
+                >
                   Danielle@backroadbeautyandco.com
                 </a>
               </p>
@@ -66,10 +76,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-deep-taupe/10 text-center">
+        <div className="pt-8 border-t border-deep-taupe/10 text-center space-y-4">
           <p className="font-paragraph text-sm text-deep-taupe/60">
             © {new Date().getFullYear()} Backroad Beauty & Co. All rights reserved.
           </p>
+          <div className="flex justify-center gap-6">
+            <Link
+              to="/accessibility"
+              className="font-paragraph text-sm text-deep-taupe/60 hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1"
+            >
+              Accessibility Statement
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

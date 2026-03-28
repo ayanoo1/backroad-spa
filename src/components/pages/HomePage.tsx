@@ -162,6 +162,9 @@ export default function HomePage() {
         .clip-soft-arch { clip-path: ellipse(120% 100% at 50% 0%); }
         .glass-panel { background: rgba(248, 245, 240, 0.85); backdrop-filter: blur(12px); }
         .hairline-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(74, 74, 74, 0.15), transparent); }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
       `}</style>
 
       <Header />
@@ -174,7 +177,7 @@ export default function HomePage() {
         >
           <Image
             src={ASSETS.hero}
-            alt="Backroad Beauty & Co. luxury spa interior"
+            alt="Backroad Beauty & Co. luxury spa interior with elegant green chairs and warm lighting"
             className="w-full h-full object-cover scale-105"
             width={1920}
           />
@@ -191,9 +194,9 @@ export default function HomePage() {
             className="max-w-4xl flex flex-col items-center"
           >
             <motion.div variants={fadeUp} className="mb-6 flex items-center gap-3">
-              <div className="w-12 h-[1px] bg-deep-taupe/40" />
+              <div className="w-12 h-[1px] bg-deep-taupe/40" aria-hidden="true" />
               <span className="uppercase tracking-[0.2em] text-xs font-medium text-deep-taupe/70">Boutique Spa</span>
-              <div className="w-12 h-[1px] bg-deep-taupe/40" />
+              <div className="w-12 h-[1px] bg-deep-taupe/40" aria-hidden="true" />
             </motion.div>
 
             <motion.h1 
@@ -214,7 +217,7 @@ export default function HomePage() {
             <motion.div variants={fadeUp}>
               <Button
                 size="lg"
-                className="bg-deep-taupe hover:bg-primary text-ivory font-paragraph text-base tracking-wide px-10 py-7 rounded-none transition-all duration-500 group"
+                className="bg-deep-taupe hover:bg-primary text-ivory font-paragraph text-base tracking-wide px-10 py-7 rounded-none transition-all duration-500 group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 onClick={() => document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Book Your Appointment
@@ -228,6 +231,7 @@ export default function HomePage() {
         <motion.div 
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }}
           className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          aria-hidden="true"
         >
           <span className="text-[10px] uppercase tracking-widest text-deep-taupe/50">Scroll to discover</span>
           <div className="w-[1px] h-12 bg-gradient-to-b from-deep-taupe/50 to-transparent" />
@@ -250,7 +254,7 @@ export default function HomePage() {
               >
                 <Image
                   src={ASSETS.about}
-                  alt="Boutique details at Backroad Beauty & Co."
+                  alt="Boutique spa details and elegant interior design at Backroad Beauty & Co."
                   className="w-full h-full object-cover"
                   width={800}
                 />
@@ -264,7 +268,7 @@ export default function HomePage() {
                 transition={{ duration: 1, delay: 0.3 }}
                 className="absolute -bottom-12 -right-6 md:-right-12 bg-white p-6 shadow-xl max-w-[200px] z-10"
               >
-                <Sparkles className="w-6 h-6 text-accent-gold mb-3" />
+                <Sparkles className="w-6 h-6 text-accent-gold mb-3" aria-hidden="true" />
                 <p className="text-xs uppercase tracking-widest text-deep-taupe/60 leading-relaxed">Intentional Self-Care</p>
               </motion.div>
             </div>
@@ -360,6 +364,7 @@ export default function HomePage() {
                         whileHover={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.2 }}
                         className="bg-white/90 p-3 rounded-full shadow-lg"
+                        aria-hidden="true"
                       >
                         <ZoomIn className="w-6 h-6 text-deep-taupe" />
                       </motion.div>
@@ -380,6 +385,9 @@ export default function HomePage() {
           exit={{ opacity: 0 }}
           onClick={() => setExpandedImage(null)}
           className="fixed inset-0 bg-deep-taupe/80 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Expanded service menu image"
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -390,7 +398,7 @@ export default function HomePage() {
           >
             <button
               onClick={() => setExpandedImage(null)}
-              className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white p-2 rounded-full transition-colors"
+              className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
               aria-label="Close image"
             >
               <X className="w-6 h-6 text-deep-taupe" />
@@ -412,7 +420,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-deep-taupe">
             <Image
               src={ASSETS.atmosphereFeature}
-              alt="Salon chairs at Backroad Beauty & Co."
+              alt="Elegant salon chairs and spa interior at Backroad Beauty & Co."
               className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
               width={1920}
             />
@@ -511,7 +519,7 @@ export default function HomePage() {
                   {/* Quote mark decoration */}
                   <div className="absolute top-8 right-8 text-6xl font-heading text-blush-pink/30 leading-none select-none">"</div>
                   
-                  <div className="flex items-center gap-1 mb-8">
+                  <div className="flex items-center gap-1 mb-8" role="img" aria-label={`${testimonial.rating} out of 5 stars`}>
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
@@ -520,6 +528,7 @@ export default function HomePage() {
                             ? 'fill-accent-gold text-accent-gold'
                             : 'text-deep-taupe/10'
                         }`}
+                        aria-hidden="true"
                       />
                     ))}
                   </div>
@@ -595,10 +604,11 @@ export default function HomePage() {
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <motion.div variants={fadeUp} className="space-y-3">
-                    <Label htmlFor="name" className="text-xs uppercase tracking-widest text-deep-taupe/70">Full Name *</Label>
+                    <Label htmlFor="name" className="text-xs uppercase tracking-widest text-deep-taupe/70">Full Name <span aria-label="required">*</span></Label>
                     <Input
                       id="name"
                       required
+                      aria-required="true"
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
                       className="border-0 border-b border-deep-taupe/20 rounded-none px-0 py-2 bg-transparent focus-visible:ring-0 focus-visible:border-primary text-base"
@@ -607,11 +617,12 @@ export default function HomePage() {
                   </motion.div>
 
                   <motion.div variants={fadeUp} className="space-y-3">
-                    <Label htmlFor="email" className="text-xs uppercase tracking-widest text-deep-taupe/70">Email Address *</Label>
+                    <Label htmlFor="email" className="text-xs uppercase tracking-widest text-deep-taupe/70">Email Address <span aria-label="required">*</span></Label>
                     <Input
                       id="email"
                       type="email"
                       required
+                      aria-required="true"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       className="border-0 border-b border-deep-taupe/20 rounded-none px-0 py-2 bg-transparent focus-visible:ring-0 focus-visible:border-primary text-base"
@@ -622,11 +633,12 @@ export default function HomePage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <motion.div variants={fadeUp} className="space-y-3">
-                    <Label htmlFor="phone" className="text-xs uppercase tracking-widest text-deep-taupe/70">Phone Number *</Label>
+                    <Label htmlFor="phone" className="text-xs uppercase tracking-widest text-deep-taupe/70">Phone Number <span aria-label="required">*</span></Label>
                     <Input
                       id="phone"
                       type="tel"
                       required
+                      aria-required="true"
                       value={formData.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
                       className="border-0 border-b border-deep-taupe/20 rounded-none px-0 py-2 bg-transparent focus-visible:ring-0 focus-visible:border-primary text-base"
@@ -635,13 +647,13 @@ export default function HomePage() {
                   </motion.div>
 
                   <motion.div variants={fadeUp} className="space-y-3">
-                    <Label htmlFor="service" className="text-xs uppercase tracking-widest text-deep-taupe/70">Service *</Label>
+                    <Label htmlFor="service" className="text-xs uppercase tracking-widest text-deep-taupe/70">Service <span aria-label="required">*</span></Label>
                     <Select
                       required
                       value={formData.requestedService}
                       onValueChange={(value) => handleInputChange('requestedService', value)}
                     >
-                      <SelectTrigger id="service" className="border-0 border-b border-deep-taupe/20 rounded-none px-0 py-2 bg-transparent focus:ring-0 focus:border-primary text-base shadow-none">
+                      <SelectTrigger id="service" className="border-0 border-b border-deep-taupe/20 rounded-none px-0 py-2 bg-transparent focus:ring-0 focus:border-primary text-base shadow-none" aria-required="true">
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
                       <SelectContent className="bg-ivory border-deep-taupe/10">
@@ -656,12 +668,13 @@ export default function HomePage() {
                 </div>
 
                 <motion.div variants={fadeUp} className="space-y-3">
-                  <Label className="text-xs uppercase tracking-widest text-deep-taupe/70">Preferred Date *</Label>
+                  <Label className="text-xs uppercase tracking-widest text-deep-taupe/70">Preferred Date <span aria-label="required">*</span></Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
                         className={`w-full justify-start text-left font-normal border-0 border-b border-deep-taupe/20 rounded-none px-0 py-2 bg-transparent hover:bg-transparent hover:text-primary focus-visible:ring-0 shadow-none text-base ${!preferredDate && "text-muted-foreground"}`}
+                        aria-required="true"
                       >
                         <CalendarIcon className="mr-3 h-4 w-4 opacity-50" />
                         {preferredDate ? format(preferredDate, 'PPP') : 'Select a date'}
@@ -696,7 +709,7 @@ export default function HomePage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting || !preferredDate}
-                    className="w-full bg-deep-taupe hover:bg-primary text-ivory font-paragraph text-base tracking-wide py-7 rounded-none transition-colors duration-500"
+                    className="w-full bg-deep-taupe hover:bg-primary text-ivory font-paragraph text-base tracking-wide py-7 rounded-none transition-colors duration-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   >
                     {isSubmitting ? 'Submitting...' : 'Request Appointment'}
                   </Button>
