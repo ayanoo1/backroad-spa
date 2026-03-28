@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon, Star, ArrowRight, Sparkles, ZoomIn, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { BaseCrudService } from '@/integrations';
-import { AtmosphereGallery, Testimonials, BookingRequests } from '@/entities';
+import { Testimonials, BookingRequests } from '@/entities';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -64,9 +64,7 @@ const staggerContainer = {
 
 export default function HomePage() {
   // --- Data Fidelity: Preserved State ---
-  const [atmosphereImages, setAtmosphereImages] = useState<AtmosphereGallery[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonials[]>([]);
-  const [isLoadingGallery, setIsLoadingGallery] = useState(true);
   const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -84,7 +82,6 @@ export default function HomePage() {
   // --- Refs for Scroll Animations ---
   const heroRef = useRef<HTMLElement>(null);
   const aboutRef = useRef<HTMLElement>(null);
-  const atmosphereRef = useRef<HTMLElement>(null);
 
   // --- Parallax Setup ---
   const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -96,20 +93,8 @@ export default function HomePage() {
 
   // --- Data Fidelity: Preserved Logic ---
   useEffect(() => {
-    loadGalleryImages();
     loadTestimonials();
   }, []);
-
-  const loadGalleryImages = async () => {
-    try {
-      const { items } = await BaseCrudService.getAll<AtmosphereGallery>('atmospheregallery');
-      setAtmosphereImages(items.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)));
-    } catch (error) {
-      console.error('Error loading gallery:', error);
-    } finally {
-      setIsLoadingGallery(false);
-    }
-  };
 
   const loadTestimonials = async () => {
     try {
@@ -413,79 +398,7 @@ export default function HomePage() {
         </motion.div>
       )}
 
-      {/* 4. ATMOSPHERE / SPACE SECTION - Sticky Narrative & CMS Gallery */}
-      <section ref={atmosphereRef} id="atmosphere" className="relative bg-ivory">
-        {/* Part 1: The Structural Feature (Using provided image) */}
-        <div className="relative h-[80svh] w-full overflow-hidden">
-          <div className="absolute inset-0 bg-deep-taupe">
-            <Image
-              src={ASSETS.atmosphereFeature}
-              alt="Elegant salon chairs and spa interior at Backroad Beauty & Co."
-              className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
-              width={1920}
-            />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-              className="glass-panel p-12 md:p-20 max-w-3xl border border-white/20"
-            >
-              <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl text-deep-taupe mb-6">
-                Your Sanctuary <span className="italic text-primary">Awaits</span>
-              </h2>
-              <p className="text-lg text-deep-taupe/70 font-light">
-                Step into a world of tranquility and refined luxury. Every corner is designed to envelop you in comfort.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Part 2: The CMS Gallery (Data Fidelity) */}
-        <div className="py-32 px-6 max-w-[100rem] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            {isLoadingGallery ? (
-              <div className="col-span-full py-20 text-center text-deep-taupe/40">Curating atmosphere...</div>
-            ) : atmosphereImages.length > 0 ? (
-              atmosphereImages.map((image, index) => (
-                <motion.div
-                  key={image._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.8, delay: (index % 3) * 0.15 }}
-                  className={`relative group overflow-hidden bg-sage-green/5 ${
-                    index === 0 ? 'md:col-span-2 lg:col-span-2 aspect-[16/9]' : 'aspect-square'
-                  }`}
-                >
-                  <Image
-                    src={image.image || ''}
-                    alt={image.altText || image.title || 'Spa atmosphere'}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    width={800}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep-taupe/80 via-deep-taupe/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {image.title && (
-                    <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <h3 className="font-heading text-2xl text-ivory mb-2">{image.title}</h3>
-                      {image.description && (
-                        <p className="text-sm text-ivory/80 font-light line-clamp-2">{image.description}</p>
-                      )}
-                    </div>
-                  )}
-                </motion.div>
-              ))
-            ) : (
-              <div className="col-span-full py-20 text-center text-deep-taupe/40">Gallery coming soon.</div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. TESTIMONIAL SECTION - Soft, Flowing Layout */}
+      {/* 4. TESTIMONIAL SECTION - Soft, Flowing Layout */}
       <section id="testimonials" className="py-32 md:py-48 px-6 bg-blush-pink/10 relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blush-pink/50 to-transparent -translate-y-1/2" />
@@ -568,7 +481,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. BOOKING SECTION (CRITICAL) - Split Layout, Functional */}
+      {/* 5. BOOKING SECTION (CRITICAL) - Split Layout, Functional */}
       <section id="booking" className="relative bg-ivory">
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[90svh]">
           
@@ -731,7 +644,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. CONTACT SECTION - Elegant Footer Prelude */}
+      {/* 6. CONTACT SECTION - Elegant Footer Prelude */}
       <section id="contact" className="py-32 px-6 bg-deep-taupe text-ivory text-center relative overflow-hidden">
         {/* Subtle background texture/noise could go here, using a radial gradient for now */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_100%)] pointer-events-none" />
