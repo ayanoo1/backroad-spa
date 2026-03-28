@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Star, ArrowRight, Sparkles } from 'lucide-react';
+import { CalendarIcon, Star, ArrowRight, Sparkles, ZoomIn, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { BaseCrudService } from '@/integrations';
 import { AtmosphereGallery, Testimonials, BookingRequests } from '@/entities';
@@ -23,6 +23,30 @@ const ASSETS = {
   atmosphereFeature: "https://static.wixstatic.com/media/488851_9f50c4f3cbde4697ace403a5c03a4784~mv2.jpeg", // Salon Chairs
   booking: "https://static.wixstatic.com/media/488851_7660d48fd27340308b624b1fe91c19a6~mv2.jpeg" // Reception
 };
+
+// Service Menu Images
+const SERVICE_MENUS = [
+  {
+    title: "Spa Rituals & Pedicure Services",
+    image: "https://static.wixstatic.com/media/488851_cf5e8cca046d4e65b350f7488aa9490b~mv2.jpeg",
+    alt: "Head Spa Rituals, Pedicure Rituals, and Add-On Services menu"
+  },
+  {
+    title: "Waxing Menu",
+    image: "https://static.wixstatic.com/media/488851_db8653d5230b4a2dae61d86f83dcd172~mv2.jpeg",
+    alt: "Face, Body, Bikini + Brazilian, Intimate Skin Care, and Signature Combo services"
+  },
+  {
+    title: "Facial Treatments & Lash Services",
+    image: "https://static.wixstatic.com/media/488851_0a387cdedba64c60af81c513dee9a182~mv2.jpeg",
+    alt: "Facial Treatments, Brow & Lash Rituals, Lash Extensions, and Fills menu"
+  },
+  {
+    title: "Private Party Packages",
+    image: "https://static.wixstatic.com/media/488851_024506fbcbb94e45a99fc983a0ced4c7~mv2.jpeg",
+    alt: "BYOB Private Event Experience and group packages"
+  }
+];
 
 // --- Animation Variants ---
 const fadeUp = {
@@ -46,6 +70,7 @@ export default function HomePage() {
   const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -274,8 +299,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SERVICES SECTION - Layout Only, Clean Grid */}
-      <section id="services" className="py-32 md:py-48 px-6 bg-sage-green/5 relative">
+      {/* 3. SERVICES SECTION - Clean Vertical Layout with Service Menu Images */}
+      <section id="services" className="py-32 md:py-48 px-6 bg-ivory relative">
         <div className="hairline-divider absolute top-0 left-0 w-full" />
         
         <div className="max-w-[100rem] mx-auto">
@@ -284,44 +309,101 @@ export default function HomePage() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="text-center mb-20"
+            className="text-center mb-24"
           >
-            <motion.span variants={fadeUp} className="uppercase tracking-[0.2em] text-xs font-medium text-sage-green mb-4 block">Offerings</motion.span>
+            <motion.span variants={fadeUp} className="uppercase tracking-[0.2em] text-xs font-medium text-sage-green mb-4 block">Our Offerings</motion.span>
             <motion.h2 variants={fadeUp} className="font-heading text-4xl md:text-5xl lg:text-6xl text-deep-taupe mb-6">
-              Our Services
+              Service Menu
             </motion.h2>
             <motion.p variants={fadeUp} className="text-lg text-deep-taupe/60 max-w-2xl mx-auto font-light">
-              Curated treatments designed to nurture your body and spirit.
+              Explore our complete range of treatments and services.
             </motion.p>
           </motion.div>
 
-          {/* Empty Layout Grid for Future Services */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-            {[1, 2, 3].map((item) => (
+          {/* Vertical Stack of Service Menu Images */}
+          <div className="space-y-20 md:space-y-32">
+            {SERVICE_MENUS.map((menu, index) => (
               <motion.div
-                key={item}
-                initial={{ opacity: 0, y: 20 }}
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: item * 0.1 }}
-                className="group relative aspect-[4/5] bg-ivory border border-deep-taupe/5 flex flex-col items-center justify-center p-8 text-center hover:border-sage-green/30 transition-colors duration-500"
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: index * 0.15 }}
+                className="flex flex-col items-center"
               >
-                <div className="w-12 h-12 rounded-full border border-dashed border-deep-taupe/20 mb-6 flex items-center justify-center">
-                  <span className="text-deep-taupe/20 text-sm">+</span>
-                </div>
-                <h3 className="font-heading text-2xl text-deep-taupe/40 mb-3">Service Title</h3>
-                <p className="text-sm text-deep-taupe/30 font-light">Description placeholder for future service details.</p>
-                
-                {/* Decorative corner brackets */}
-                <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-deep-taupe/10 group-hover:border-sage-green/40 transition-colors" />
-                <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-deep-taupe/10 group-hover:border-sage-green/40 transition-colors" />
-                <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-deep-taupe/10 group-hover:border-sage-green/40 transition-colors" />
-                <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-deep-taupe/10 group-hover:border-sage-green/40 transition-colors" />
+                {/* Section Title */}
+                <motion.h3 
+                  variants={fadeUp}
+                  className="font-heading text-2xl md:text-3xl text-deep-taupe mb-8 text-center"
+                >
+                  {menu.title}
+                </motion.h3>
+
+                {/* Image Container with Zoom Capability */}
+                <motion.div
+                  className="relative w-full max-w-2xl group cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => setExpandedImage(menu.image)}
+                >
+                  <div className="relative overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                      src={menu.image}
+                      alt={menu.alt}
+                      className="w-full h-auto object-contain bg-ivory"
+                      width={800}
+                    />
+                    {/* Zoom Overlay */}
+                    <div className="absolute inset-0 bg-deep-taupe/0 group-hover:bg-deep-taupe/20 transition-colors duration-300 flex items-center justify-center">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileHover={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                        className="bg-white/90 p-3 rounded-full shadow-lg"
+                      >
+                        <ZoomIn className="w-6 h-6 text-deep-taupe" />
+                      </motion.div>
+                    </div>
+                  </div>
+                </motion.div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Image Zoom Modal */}
+      {expandedImage && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setExpandedImage(null)}
+          className="fixed inset-0 bg-deep-taupe/80 z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full max-h-[90vh] bg-ivory rounded-lg overflow-hidden shadow-2xl"
+          >
+            <button
+              onClick={() => setExpandedImage(null)}
+              className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white p-2 rounded-full transition-colors"
+              aria-label="Close image"
+            >
+              <X className="w-6 h-6 text-deep-taupe" />
+            </button>
+            <Image
+              src={expandedImage}
+              alt="Expanded service menu"
+              className="w-full h-full object-contain"
+              width={1200}
+            />
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* 4. ATMOSPHERE / SPACE SECTION - Sticky Narrative & CMS Gallery */}
       <section ref={atmosphereRef} id="atmosphere" className="relative bg-ivory">
