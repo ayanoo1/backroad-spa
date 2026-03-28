@@ -30,7 +30,6 @@ export default function Footer() {
                 { label: 'Home', href: '#home' },
                 { label: 'About', href: '#about' },
                 { label: 'Services', href: '#services' },
-                { label: 'Atmosphere', href: '#atmosphere' },
                 { label: 'Testimonials', href: '#testimonials' },
                 { label: 'Book Now', href: '#booking' },
               ].map((link) => (
