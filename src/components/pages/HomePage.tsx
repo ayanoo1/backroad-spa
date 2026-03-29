@@ -484,7 +484,105 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SERVICES SECTION - Aesthetic Menu Layout */}
+      {/* 3. PHILOSOPHY SECTION - Narrative, Elegant Layout */}
+      <section id="philosophy" className="py-32 md:py-48 px-6 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-[30vw] h-[30vw] bg-sage-green/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-[35vw] h-[35vw] bg-blush-pink/10 rounded-full blur-[100px] translate-x-1/4 translate-y-1/4 pointer-events-none" />
+        
+        <div className="max-w-[100rem] mx-auto relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="mb-24"
+          >
+            <motion.div variants={fadeUp} className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-[1px] bg-accent-gold" aria-hidden="true" />
+              <span className="uppercase tracking-[0.2em] text-xs font-medium text-accent-gold">Our Story</span>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="font-heading text-4xl md:text-5xl lg:text-6xl text-deep-taupe mb-6 leading-[1.15]">
+              The <span className="italic text-sage-green">Philosophy</span>
+            </motion.h2>
+          </motion.div>
+
+          {/* Philosophy Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            
+            {/* Left Column - Main Philosophy */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
+              <div className="space-y-6">
+                <h3 className="font-heading text-2xl md:text-3xl text-deep-taupe">
+                  A Sanctuary Beyond the Ordinary
+                </h3>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light">
+                  At Backroad Beauty & Co, we believe the best things in life are found a little further out where the air is clearer, the pace is slower, and the beauty is raw. We created this space to be more than just a spa; it's a sanctuary for those who value both a polished look and a wild heart.
+                </p>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light">
+                  We've traded clinical coldness for warm woods, botanical scents, and an atmosphere that invites you to exhale the moment you walk through the door.
+                </p>
+              </div>
+
+              <div className="w-16 h-[1px] bg-accent-gold/50" aria-hidden="true" />
+
+              <div className="space-y-6">
+                <h3 className="font-heading text-2xl md:text-3xl text-deep-taupe">
+                  The Rituals
+                </h3>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light">
+                  Our menu is a curated collection of modern rituals designed to ground you. Whether you are seeking the transformative rhythm of our Meadow Stream Scalp Ritual, the advanced rejuvenation of a custom facial, or the confidence of a perfectly sculpted brow, every treatment is an intentional moment of rest.
+                </p>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light">
+                  We don't just treat the skin; we restore the spirit.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Right Column - Boutique & Closing */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="space-y-8"
+            >
+              <div className="bg-gradient-to-br from-blush-pink/5 to-sage-green/5 p-10 md:p-12 rounded-lg border border-blush-pink/20">
+                <h3 className="font-heading text-2xl md:text-3xl text-deep-taupe mb-6">
+                  The Boutique & Studio
+                </h3>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light mb-6">
+                  Beyond the treatment room, Backroad Beauty & Co is a place to gather and stay a while. Our studio is home to The Everlast Link, where we celebrate moments in time with custom-fit permanent jewelry.
+                </p>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light">
+                  In our boutique, you'll find our signature Hat Bar—a space to create your own style with custom-patched trucker and cowboy hats that transition effortlessly from the spa to the trail.
+                </p>
+              </div>
+
+              <div className="w-16 h-[1px] bg-accent-gold/50" aria-hidden="true" />
+
+              <div className="space-y-6">
+                <h3 className="font-heading text-2xl md:text-3xl text-deep-taupe">
+                  The Closing
+                </h3>
+                <p className="text-lg text-deep-taupe/70 leading-relaxed font-light">
+                  We celebrate the trailblazers, the dreamers, and the locals. We are here for those who know that true luxury isn't about being fancy—it's about being seen, being cared for, and being yourself.
+                </p>
+                <p className="text-xl md:text-2xl text-deep-taupe font-light italic leading-relaxed">
+                  Welcome to the backroad. We've been waiting for you.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. SERVICES SECTION - Aesthetic Menu Layout */}
       <section id="services" className="py-32 md:py-48 px-6 bg-ivory relative">
         <div className="hairline-divider absolute top-0 left-0 w-full" />
         
