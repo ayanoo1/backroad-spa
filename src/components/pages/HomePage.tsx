@@ -961,7 +961,7 @@ export default function HomePage() {
                         {preferredDate ? format(preferredDate, 'PPP') : 'Select a date'}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-ivory border-deep-taupe/10" align="start">
+                    <PopoverContent className="w-auto p-0 bg-ivory border-deep-taupe/10" align="start" side="top" sideOffset={8}>
                       <Calendar
                         mode="single"
                         selected={preferredDate}
