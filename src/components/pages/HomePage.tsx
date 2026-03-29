@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Star, ArrowRight, Sparkles, ZoomIn, X } from 'lucide-react';
+import { CalendarIcon, Star, ArrowRight, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { BaseCrudService } from '@/integrations';
 import { Testimonials, BookingRequests } from '@/entities';
@@ -24,27 +24,224 @@ const ASSETS = {
   booking: "https://static.wixstatic.com/media/488851_7660d48fd27340308b624b1fe91c19a6~mv2.jpeg" // Reception
 };
 
-// Service Menu Images
-const SERVICE_MENUS = [
+// Service Menu Data - Organized by Category
+const SERVICE_CATEGORIES = [
   {
-    title: "Spa Rituals & Pedicure Services",
-    image: "https://static.wixstatic.com/media/488851_cf5e8cca046d4e65b350f7488aa9490b~mv2.jpeg",
-    alt: "Head Spa Rituals, Pedicure Rituals, and Add-On Services menu"
+    title: "HEAD SPA RITUALS",
+    services: [
+      { name: "The Grounding Ritual", duration: "60 min", price: "$110", description: "Relaxing scalp therapy to hydrate, stimulate, and reset. Includes blow dry + quick style" },
+      { name: "The Restoration Ritual", duration: "90 min", price: "$145", description: "Deeper detox + extended massage for full mind + scalp renewal. Includes blow dry + quick style" },
+      { name: "The Full Reset Ritual", duration: "120 min", price: "$180", description: "Intensive scalp therapy and full restoration experience. Includes full blowout" },
+      { name: "Upgrade any 60 or 90 min ritual to full blowout", price: "+$25", description: "" }
+    ]
   },
   {
-    title: "Waxing Menu",
-    image: "https://static.wixstatic.com/media/488851_db8653d5230b4a2dae61d86f83dcd172~mv2.jpeg",
-    alt: "Face, Body, Bikini + Brazilian, Intimate Skin Care, and Signature Combo services"
+    title: "PEDICURE RITUALS",
+    services: [
+      { name: "The Roadhouse Pedi", price: "$55", description: "Clean, shape, exfoliate, and polish for a refreshed, no-fuss finish." },
+      { name: "The Backroad Pedi", price: "$70", description: "Full pedicure with callus work, exfoliation, massage, and polish." },
+      { name: "The Wildflower Pedi", price: "$85", description: "Extended massage, deep exfoliation, and elevated care for full relaxation." }
+    ]
   },
   {
-    title: "Facial Treatments & Lash Services",
-    image: "https://static.wixstatic.com/media/488851_0a387cdedba64c60af81c513dee9a182~mv2.jpeg",
-    alt: "Facial Treatments, Brow & Lash Rituals, Lash Extensions, and Fills menu"
+    title: "ADD-ON RITUALS",
+    services: [
+      { name: "Scalp Boost", price: "$15", description: "" },
+      { name: "Eye Revival", price: "$15", description: "" },
+      { name: "Targeted Extractions", price: "$20", description: "" },
+      { name: "Aroma Ritual", price: "$10", description: "" }
+    ]
   },
   {
-    title: "Private Party Packages",
-    image: "https://static.wixstatic.com/media/488851_024506fbcbb94e45a99fc983a0ced4c7~mv2.jpeg",
-    alt: "BYOB Private Event Experience and group packages"
+    title: "WAXING MENU - FACE",
+    services: [
+      { name: "Brow Shape", price: "$20", description: "" },
+      { name: "Lip", price: "$12", description: "" },
+      { name: "Chin", price: "$12", description: "" },
+      { name: "Full Face", price: "$40", description: "" }
+    ]
+  },
+  {
+    title: "WAXING MENU - BODY",
+    services: [
+      { name: "Underarms", price: "$20", description: "" },
+      { name: "Half Arm", price: "$30", description: "" },
+      { name: "Full Arm", price: "$45", description: "" },
+      { name: "Half Leg", price: "$40", description: "" },
+      { name: "Full Leg", price: "$65", description: "" }
+    ]
+  },
+  {
+    title: "WAXING MENU - BIKINI + BRAZILIAN",
+    services: [
+      { name: "Bikini Line", price: "$35", description: "" },
+      { name: "Full Bikini", price: "$50", description: "" },
+      { name: "Brazilian (Female)", price: "$65", description: "Complete hair removal, front to back." },
+      { name: "Maintenance Brazilian (4-6 weeks)", price: "$55", description: "" }
+    ]
+  },
+  {
+    title: "INTIMATE SKIN CARE",
+    services: [
+      { name: "Vagacial", price: "$70", description: "Soothing treatment to help with ingrowns, irritation, and discoloration." },
+      { name: "Deluxe Vagacial", price: "$90", description: "Includes deep exfoliation, extractions, mask, and high-frequency." }
+    ]
+  },
+  {
+    title: "SIGNATURE COMBO",
+    services: [
+      { name: "The Smooth Ritual (Brazilian + Vagacial)", price: "$120", description: "Best Value. Complete hair removal paired with a targeted skin treatment to soothe, prevent ingrowns, and leave skin smooth and refreshed." }
+    ]
+  },
+  {
+    title: "FACIAL TREATMENTS",
+    services: [
+      { name: "The Quick Reset (Express Facial)", duration: "30 min", price: "$55", description: "A results-driven refresh to cleanse, exfoliate, and hydrate—perfect for a quick skin pick-me-up." },
+      { name: "The Reset Facial", duration: "60 min", price: "$85", description: "A customized facial designed to restore balance, improve texture, and bring out your natural glow." },
+      { name: "The Deep Facial", duration: "90 min", price: "$120", description: "Advanced treatment with extended massage and targeted care for deeper correction and visible results." },
+      { name: "Backroad Back Facial", duration: "95 min", price: "$95", description: "A deep-cleansing back treatment to target congestion, smooth texture, and clarify the skin." }
+    ]
+  },
+  {
+    title: "BROW & LASH RITUALS",
+    services: [
+      { name: "The Lifted Gaze (Lash Lift & Tint)", price: "$70", description: "Lifted, darkened lashes for an effortless, low-maintenance look." },
+      { name: "The Wild Brow (Brow Lamination & Tint)", price: "$65", description: "Full, brushed-up brows with a soft, structured finish." },
+      { name: "The Full Gaze", price: "$120", description: "Lash lift, tint, and brow lamination for a complete, undone but polished look." }
+    ]
+  },
+  {
+    title: "LASH EXTENSIONS",
+    services: [
+      { name: "The Soft Set (Classic Full Set)", price: "$85", description: "Natural, mascara-like lashes with soft definition." },
+      { name: "The Textured Set (Hybrid Full Set)", price: "$105", description: "A fuller, wispy blend of classic and volume lashes." },
+      { name: "The Bold Set (Volume Full Set)", price: "$125", description: "Full, fluffy, and dramatic lashes." }
+    ]
+  },
+  {
+    title: "LASH EXTENSIONS - FILLS",
+    services: [
+      { name: "2 Week Fill", price: "$45", description: "" },
+      { name: "3 Week Fill", price: "$60", description: "" },
+      { name: "4 Week Fill", price: "$75", description: "(After 4 weeks, full set required)" }
+    ]
+  },
+  {
+    title: "PRIVATE PARTY PACKAGES",
+    isPackage: true,
+    packages: [
+      {
+        name: "THE BACKROAD SOCIAL (GROUP OF 5)",
+        price: "$275 total | $55 per guest",
+        description: "A laid-back, private experience perfect for girls' night or a casual get-together.",
+        includes: ["Private space (1.5 hours)", "Custom Trucker Hat Bar (1 hat per guest)", "Light refreshments setup (BYOB friendly)", "Photo-worthy setup + aesthetic space", "Option to add services per guest"]
+      },
+      {
+        name: "THE WILD COLLECTIVE (GROUP OF 5)",
+        price: "$400 total | $80 per guest",
+        description: "A more elevated experience with beauty + creativity combined.",
+        includes: ["Private space (2 hours)", "Custom Trucker Hat Bar", "Choice of ONE service per guest: Express Facial, Lash Lift & Tint", "BYOB setup + curated vibe"]
+      },
+      {
+        name: "THE BACKROAD BASH (GROUP OF 10)",
+        price: "$500 total | $50 per guest",
+        description: "Perfect for birthdays, bachelorettes, or larger gatherings.",
+        includes: ["Private space (2 hours)", "Custom Trucker Hat Bar", "BYOB experience", "Group-friendly setup + seating", "Services available as add-ons"]
+      },
+      {
+        name: "THE FULL EXPERIENCE (GROUP OF 10)",
+        price: "$900 total | $90 per guest",
+        description: "Your signature luxury party package.",
+        includes: ["Private space (2.5 hours)", "Custom Trucker Hat Bar", "Choice of ONE service per guest: Express Facial, Lash Lift & Tint", "BYOB + elevated setup", "Priority booking + full experience vibe"]
+      }
+    ]
+  },
+  {
+    title: "MEN'S RITUALS",
+    subtitle: "Built for the modern man who works hard, rides fast, and knows when to slow it down.",
+    services: [
+      { name: "The Pit Reset (Express Facial)", duration: "30 min", price: "$55", description: "A quick tune-up for tired, stressed skin. Cleanse, exfoliate, and hydrate—perfect between appointments or before a night out." },
+      { name: "The Full Detail (Custom Facial)", duration: "60 min", price: "$90", description: "Deep cleanse, exfoliation, extractions, and targeted treatment designed for your skin's needs. Leaves you refreshed, balanced, and recharged." },
+      { name: "The Overhaul (Advanced Facial)", duration: "90 min", price: "$125", description: "A full skin reset using advanced techniques like hydrodermabrasion or microcurrent to restore clarity, smoothness, and tone." },
+      { name: "Backroad Reset (Back Facial)", duration: "60 min", price: "$95", description: "Targets buildup, breakouts, and tension across the back. Deep cleanse, exfoliation, and hydration for hard-to-reach areas." }
+    ]
+  },
+  {
+    title: "MEN'S MASSAGE RITUALS",
+    services: [
+      { name: "The Slow Ride (Relaxation Massage)", description: "Unwind, decompress, and let the stress roll off.", subservices: [
+        { name: "The Quick Cruise", duration: "30 min", price: "$45" },
+        { name: "The Slow Ride", duration: "60 min", price: "$75" },
+        { name: "The Long Haul", duration: "90 min", price: "$105" }
+      ]},
+      { name: "The Heated Ride (Hot Stone Massage)", description: "Smooth heated stones melt tension deep into the muscles for a heavier, grounding experience.", subservices: [
+        { name: "The Heated Ride", duration: "60 min", price: "$95" },
+        { name: "The Long Heated Ride", duration: "90 min", price: "$125" }
+      ]}
+    ]
+  },
+  {
+    title: "MEN'S GROOMING SERVICES",
+    services: [
+      { name: "The Clean Up (Brow Wax)", price: "$15", description: "Sharpens and cleans up the brow area without over-shaping." },
+      { name: "The Beard Reset", price: "$30", description: "Steam, cleanse, condition, and shape for a clean, healthy beard." },
+      { name: "The Smooth Finish (Back or Chest Wax)", price: "$50-$60", description: "Removes unwanted hair for a clean, polished look." }
+    ]
+  },
+  {
+    title: "HEAD SPA (MEN'S)",
+    services: [
+      { name: "The Engine Reset (Head Spa Ritual)", duration: "60 min", price: "$85", description: "Deep scalp cleanse, exfoliation, massage, and hydration to promote hair and scalp health." },
+      { name: "The Engine Reset (Head Spa Ritual)", duration: "90 min", price: "$110", description: "Deep scalp cleanse, exfoliation, massage, and hydration to promote hair and scalp health." },
+      { name: "The Engine Reset (Head Spa Ritual)", duration: "120 min", price: "$140", description: "Deep scalp cleanse, exfoliation, massage, and hydration to promote hair and scalp health. Includes Blowout" }
+    ]
+  },
+  {
+    title: "MEN'S ADD-ONS",
+    services: [
+      { name: "Hot Towels + Aromatherapy", price: "$10", description: "" },
+      { name: "Scalp Massage Upgrade", price: "+$15", description: "" },
+      { name: "Eye De-Puff Treatment", price: "$10", description: "" }
+    ]
+  },
+  {
+    title: "RIDE OR DIE BRIDAL EXPERIENCE",
+    isBridal: true,
+    description: "A BOLD, ELEVATED BRIDAL MORNING FOR YOU AND YOUR CREW - DESIGNED TO KEEP THINGS CALM, SEAMLESS, AND UNFORGETTABLE.",
+    includes: ["HAIR STYLING", "MAKEUP APPLICATION", "MINI SKIN RITUAL (EXPRESS FACIAL PREP)", "LASH APPLICATION", "PRIVATE BRIDAL SUITE (3-4 HOURS)", "BYOB SETUP (JUICE, WATER, ICE PROVIDED)", "LIGHT SNACKS + SIGNATURE GOODIE BAGS"],
+    pricing: [
+      { tier: "BRIDE +5", price: "$1,650" },
+      { tier: "ADDITIONAL GUESTS", price: "$225" }
+    ]
+  },
+  {
+    title: "RIDE OR DIE: VIP BRIDAL EXPERIENCE",
+    isBridal: true,
+    description: "FULL LUXURY, HEAD-TO-TOE EXPERIENCE. AN ALL-INCLUSIVE BRIDAL MORNING WITH MORE TIME, MORE SERVICES, AND A FULLY ELEVATED EXPERIENCE.",
+    includes: ["EVERYTHING IN RIDE OR DIE +", "EXTENDED SKIN RITUAL", "EXPRESS PEDICURE (NO POLISH)", "BLOWOUT/STYLING UPGRADE OPTION", "4-5 HOUR PRIVATE SUITE", "ELEVATED SNACK DISPLAY", "PREMIUM GOODIE BAGS INCLUDED"],
+    pricing: [
+      { tier: "BRIDE +5", price: "$2,400" },
+      { tier: "ADDITIONAL GUESTS", price: "$295" }
+    ]
+  },
+  {
+    title: "BRIDAL BOOKING DETAILS",
+    isBridal: true,
+    details: ["RETAINER REQUIRED TO RESERVE DATE", "FINAL HEADCOUNT DUE 14 DAYS PRIOR", "BRIDAL TRIAL BOOKED SEPARATELY", "BYOB ALLOWED (MUST FOLLOW OHIO GUIDELINES)"]
+  },
+  {
+    title: "MASSAGE RITUALS",
+    services: [
+      { name: "THE SLOW RIDE", description: "A CALMING FULL-BODY MASSAGE DESIGNED TO EASE TENSION, QUIET THE MIND, AND LEAVE YOU FEELING RESTORED.", subservices: [
+        { name: "QUICK CRUISE", duration: "30 min", price: "$45" },
+        { name: "SLOW RIDE", duration: "60 min", price: "$75" },
+        { name: "LONG HAUL", duration: "90 min", price: "$105" }
+      ]},
+      { name: "THE HEATED RIDE", description: "HEATED STONES COMBINED WITH SLOW, INTENTIONAL MASSAGE WORK DEEP INTO TENSION, LEAVING THE BODY RELAXED, HEAVY, AND FULLY RESTORED.", subservices: [
+        { name: "HEATED RIDE", duration: "60 min", price: "$95" },
+        { name: "LONG HEATED RIDE", duration: "90 min", price: "$125" }
+      ]}
+    ]
   }
 ];
 
@@ -68,7 +265,6 @@ export default function HomePage() {
   const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [expandedImage, setExpandedImage] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -288,7 +484,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SERVICES SECTION - Clean Vertical Layout with Service Menu Images */}
+      {/* 3. SERVICES SECTION - Aesthetic Menu Layout */}
       <section id="services" className="py-32 md:py-48 px-6 bg-ivory relative">
         <div className="hairline-divider absolute top-0 left-0 w-full" />
         
@@ -309,94 +505,168 @@ export default function HomePage() {
             </motion.p>
           </motion.div>
 
-          {/* Vertical Stack of Service Menu Images */}
-          <div className="space-y-20 md:space-y-32">
-            {SERVICE_MENUS.map((menu, index) => (
+          {/* Service Categories Grid */}
+          <div className="space-y-24 md:space-y-32">
+            {SERVICE_CATEGORIES.map((category, catIndex) => (
               <motion.div
-                key={index}
+                key={catIndex}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15 }}
-                className="flex flex-col items-center"
+                transition={{ duration: 0.8, delay: catIndex * 0.1 }}
+                className="border-t border-deep-taupe/10 pt-16"
               >
-                {/* Section Title */}
-                <motion.h3 
-                  variants={fadeUp}
-                  className="font-heading text-2xl md:text-3xl text-deep-taupe mb-8 text-center"
-                >
-                  {menu.title}
-                </motion.h3>
+                {/* Category Header */}
+                <div className="mb-12">
+                  <h3 className="font-heading text-3xl md:text-4xl text-deep-taupe mb-2">
+                    {category.title}
+                  </h3>
+                  {category.subtitle && (
+                    <p className="text-lg text-deep-taupe/60 font-light italic">{category.subtitle}</p>
+                  )}
+                </div>
 
-                {/* Image Container with Zoom Capability */}
-                <motion.div
-                  className="relative w-full max-w-2xl group cursor-pointer"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() => setExpandedImage(menu.image)}
-                >
-                  <div className="relative overflow-hidden rounded-lg shadow-lg">
-                    <Image
-                      src={menu.image}
-                      alt={menu.alt}
-                      className="w-full h-auto object-contain bg-ivory"
-                      width={800}
-                    />
-                    {/* Zoom Overlay */}
-                    <div className="absolute inset-0 bg-deep-taupe/0 group-hover:bg-deep-taupe/20 transition-colors duration-300 flex items-center justify-center">
+                {/* Regular Services */}
+                {category.services && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+                    {category.services.map((service, idx) => (
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileHover={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.2 }}
-                        className="bg-white/90 p-3 rounded-full shadow-lg"
-                        aria-hidden="true"
+                        key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: idx * 0.05 }}
+                        className="group"
                       >
-                        <ZoomIn className="w-6 h-6 text-deep-taupe" />
+                        <div className="flex justify-between items-start gap-4 mb-3">
+                          <div className="flex-1">
+                            <h4 className="font-heading text-lg md:text-xl text-deep-taupe group-hover:text-primary transition-colors">
+                              {service.name}
+                            </h4>
+                            {service.duration && (
+                              <p className="text-sm text-deep-taupe/50 mt-1">{service.duration}</p>
+                            )}
+                          </div>
+                          <p className="font-heading text-lg md:text-xl text-accent-gold whitespace-nowrap ml-4">
+                            {service.price}
+                          </p>
+                        </div>
+                        {service.description && (
+                          <p className="text-base text-deep-taupe/70 font-light leading-relaxed">
+                            {service.description}
+                          </p>
+                        )}
+                        
+                        {/* Subservices */}
+                        {service.subservices && (
+                          <div className="mt-6 ml-4 space-y-4 border-l-2 border-blush-pink/30 pl-6">
+                            {service.subservices.map((sub, subIdx) => (
+                              <div key={subIdx}>
+                                <div className="flex justify-between items-start gap-4">
+                                  <p className="text-base text-deep-taupe/80">{sub.name}</p>
+                                  <p className="font-heading text-base text-accent-gold whitespace-nowrap ml-4">{sub.price}</p>
+                                </div>
+                                {sub.duration && (
+                                  <p className="text-sm text-deep-taupe/50 mt-1">{sub.duration}</p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </motion.div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Party Packages */}
+                {category.packages && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+                    {category.packages.map((pkg, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: idx * 0.05 }}
+                        className="bg-blush-pink/5 p-8 md:p-10 rounded-lg border border-blush-pink/20 group hover:border-blush-pink/40 transition-colors"
+                      >
+                        <div className="flex justify-between items-start gap-4 mb-4">
+                          <h4 className="font-heading text-lg md:text-xl text-deep-taupe group-hover:text-primary transition-colors">
+                            {pkg.name}
+                          </h4>
+                          <p className="font-heading text-lg text-accent-gold whitespace-nowrap ml-4">{pkg.price}</p>
+                        </div>
+                        <p className="text-base text-deep-taupe/70 font-light mb-6">{pkg.description}</p>
+                        <div className="space-y-2">
+                          <p className="text-xs uppercase tracking-widest text-deep-taupe/50 font-medium">Includes:</p>
+                          {pkg.includes.map((item, itemIdx) => (
+                            <p key={itemIdx} className="text-sm text-deep-taupe/70 flex items-start gap-3">
+                              <span className="text-accent-gold mt-1" aria-hidden="true">•</span>
+                              <span>{item}</span>
+                            </p>
+                          ))}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Bridal Experiences */}
+                {category.isBridal && category.includes && (
+                  <div className="bg-gradient-to-br from-blush-pink/10 to-sage-green/5 p-10 md:p-14 rounded-lg border border-blush-pink/30">
+                    <p className="text-lg text-deep-taupe/80 font-light mb-8 leading-relaxed">
+                      {category.description}
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                      <div>
+                        <p className="text-xs uppercase tracking-widest text-deep-taupe/50 font-medium mb-4">Includes:</p>
+                        <ul className="space-y-3">
+                          {category.includes.map((item, idx) => (
+                            <li key={idx} className="text-base text-deep-taupe/80 flex items-start gap-3">
+                              <span className="text-accent-gold mt-1" aria-hidden="true">✓</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      {category.pricing && (
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-deep-taupe/50 font-medium mb-4">Pricing:</p>
+                          <div className="space-y-4">
+                            {category.pricing.map((price, idx) => (
+                              <div key={idx} className="flex justify-between items-center">
+                                <p className="text-base text-deep-taupe/80">{price.tier}</p>
+                                <p className="font-heading text-lg text-accent-gold">{price.price}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </motion.div>
+                )}
+
+                {/* Bridal Details */}
+                {category.isBridal && category.details && (
+                  <div className="bg-deep-taupe/5 p-8 md:p-10 rounded-lg border border-deep-taupe/10 mt-8">
+                    <p className="text-xs uppercase tracking-widest text-deep-taupe/50 font-medium mb-6">Booking Details:</p>
+                    <ul className="space-y-3">
+                      {category.details.map((detail, idx) => (
+                        <li key={idx} className="text-base text-deep-taupe/80 flex items-start gap-3">
+                          <span className="text-primary mt-1" aria-hidden="true">→</span>
+                          <span>{detail}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Image Zoom Modal */}
-      {expandedImage && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setExpandedImage(null)}
-          className="fixed inset-0 bg-deep-taupe/80 z-50 flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Expanded service menu image"
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-w-4xl w-full max-h-[90vh] bg-ivory rounded-lg overflow-hidden shadow-2xl"
-          >
-            <button
-              onClick={() => setExpandedImage(null)}
-              className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
-              aria-label="Close image"
-            >
-              <X className="w-6 h-6 text-deep-taupe" />
-            </button>
-            <Image
-              src={expandedImage}
-              alt="Expanded service menu"
-              className="w-full h-full object-contain"
-              width={1200}
-            />
-          </motion.div>
-        </motion.div>
-      )}
 
       {/* 4. TESTIMONIAL SECTION - Soft, Flowing Layout */}
       <section id="testimonials" className="py-32 md:py-48 px-6 bg-blush-pink/10 relative overflow-hidden">
