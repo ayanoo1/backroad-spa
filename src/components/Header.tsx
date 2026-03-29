@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navLinks = [
     { label: 'Home', href: '#home' },
@@ -17,10 +19,27 @@ export default function Header() {
 
   const scrollToSection = (href: string) => {
     setMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    // If we're on the home page, scroll directly
+    if (location.pathname === '/') {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Navigate to home page first, then scroll
+      navigate('/', { replace: false });
+      // Use setTimeout to ensure the page loads before scrolling
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
+  };
+
+  const handleBookNow = () => {
+    scrollToSection('#booking');
   };
 
   return (
@@ -48,7 +67,7 @@ export default function Header() {
               </button>
             ))}
             <Button
-              onClick={() => scrollToSection('#booking')}
+              onClick={handleBookNow}
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-paragraph rounded-full px-6 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               Book Now
@@ -97,7 +116,7 @@ export default function Header() {
                 </button>
               ))}
               <Button
-                onClick={() => scrollToSection('#booking')}
+                onClick={handleBookNow}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-paragraph rounded-full py-6 mt-4 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Book Now
