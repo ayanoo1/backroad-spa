@@ -20,9 +20,9 @@ export default function AccessibilityStatementPage() {
     <div className="min-h-screen bg-ivory font-paragraph">
       <Header />
       
-      <main className="pt-32 pb-20">
+      <main id="main-content" className="focus:outline-none pt-32 pb-20" tabIndex={-1}>
         {/* Hero Section */}
-        <section className="px-6 py-20 bg-ivory">
+        <section className="px-6 py-20 bg-ivory" aria-label="Accessibility Statement heading">
           <div className="max-w-[100rem] mx-auto">
             <motion.div
               initial="hidden"
@@ -47,7 +47,7 @@ export default function AccessibilityStatementPage() {
         </section>
 
         {/* Content Sections */}
-        <section className="px-6 py-20 bg-ivory">
+        <section className="px-6 py-20 bg-ivory" aria-label="Detailed accessibility information">
           <div className="max-w-3xl mx-auto space-y-16">
             
             {/* Commitment */}

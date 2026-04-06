@@ -3,3 +3,116 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ADA Compliance Enhancements */
+
+/* Ensure focus visible is always visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #D4A0A7;
+  outline-offset: 2px;
+}
+
+/* Improve focus visibility for buttons and interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #D4A0A7;
+  outline-offset: 2px;
+}
+
+/* Ensure sufficient color contrast for links */
+a {
+  color: #D4A0A7;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #A0B2A6;
+}
+
+a:visited {
+  color: #C4A77D;
+}
+
+/* Improve form field visibility */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #D4A0A7;
+  outline-offset: 2px;
+}
+
+/* Ensure text is readable with sufficient line height */
+body {
+  line-height: 1.5;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* Improve heading hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+}
+
+/* Ensure buttons have sufficient touch target size (minimum 44x44px) */
+button,
+a[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.5rem 1rem;
+}
+
+/* Improve skip link visibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #D4A0A7;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Ensure form labels are properly associated */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Improve error message visibility */
+.error-message {
+  color: #E57373;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* Ensure sufficient contrast for disabled elements */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Improve focus indicator for mobile */
+@media (hover: none) and (pointer: coarse) {
+  button:active,
+  a:active,
+  input:active {
+    outline: 2px solid #D4A0A7;
+    outline-offset: 2px;
+  }
+}

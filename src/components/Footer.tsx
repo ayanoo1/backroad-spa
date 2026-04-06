@@ -9,7 +9,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-deep-taupe/5 border-t border-deep-taupe/10 py-16 px-6">
+    <footer className="bg-deep-taupe/5 border-t border-deep-taupe/10 py-16 px-6" role="contentinfo">
       <div className="max-w-[100rem] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}

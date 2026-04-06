@@ -346,12 +346,18 @@ export default function HomePage() {
         @media (prefers-reduced-motion: reduce) {
           * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
+        /* Focus visible styles for better accessibility */
+        *:focus-visible {
+          outline: 2px solid #D4A0A7;
+          outline-offset: 2px;
+        }
       `}</style>
 
       <Header />
+      <main id="main-content" className="focus:outline-none" tabIndex={-1}>
       
       {/* 1. HERO SECTION - Immersive, Parallax, Elegant */}
-      <section ref={heroRef} id="home" className="relative w-full h-[100svh] flex items-center justify-center overflow-hidden">
+      <section ref={heroRef} id="home" className="relative w-full h-[100svh] flex items-center justify-center overflow-hidden" aria-label="Hero section featuring Backroad Beauty & Co. luxury spa experience">
         <motion.div 
           className="absolute inset-0 w-full h-full"
           style={{ y: heroY, opacity: heroOpacity }}
@@ -420,7 +426,7 @@ export default function HomePage() {
       </section>
 
       {/* 2. ABOUT / EXPERIENCE - Asymmetrical, Parallax Image */}
-      <section ref={aboutRef} id="about" className="relative py-32 md:py-48 px-6 bg-ivory overflow-hidden">
+      <section ref={aboutRef} id="about" className="relative py-32 md:py-48 px-6 bg-ivory overflow-hidden" aria-label="About section - Learn about Backroad Beauty & Co.">
         {/* Decorative background element */}
         <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-blush-pink/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
 
@@ -485,7 +491,7 @@ export default function HomePage() {
       </section>
 
       {/* 3. PHILOSOPHY SECTION - Narrative, Elegant Layout */}
-      <section id="philosophy" className="py-32 md:py-48 px-6 bg-white relative overflow-hidden">
+      <section id="philosophy" className="py-32 md:py-48 px-6 bg-white relative overflow-hidden" aria-label="Philosophy section - Our approach to beauty and wellness">
         <div className="absolute top-0 left-0 w-[30vw] h-[30vw] bg-sage-green/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[35vw] h-[35vw] bg-blush-pink/10 rounded-full blur-[100px] translate-x-1/4 translate-y-1/4 pointer-events-none" />
         
@@ -583,7 +589,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. SERVICES SECTION - Aesthetic Menu Layout */}
-      <section id="services" className="py-32 md:py-48 px-6 bg-ivory relative">
+      <section id="services" className="py-32 md:py-48 px-6 bg-ivory relative" aria-label="Services section - Browse our complete menu of treatments">
         <div className="hairline-divider absolute top-0 left-0 w-full" />
         
         <div className="max-w-[100rem] mx-auto">
@@ -767,7 +773,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. TESTIMONIAL SECTION - Soft, Flowing Layout */}
-      <section id="testimonials" className="py-32 md:py-48 px-6 bg-blush-pink/10 relative overflow-hidden">
+      <section id="testimonials" className="py-32 md:py-48 px-6 bg-blush-pink/10 relative overflow-hidden" aria-label="Testimonials section - Hear from our satisfied clients">
         {/* Decorative background */}
         <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blush-pink/50 to-transparent -translate-y-1/2" />
         
@@ -850,7 +856,7 @@ export default function HomePage() {
       </section>
 
       {/* 5. BOOKING SECTION (CRITICAL) - Split Layout, Functional */}
-      <section id="booking" className="relative bg-ivory">
+      <section id="booking" className="relative bg-ivory" aria-label="Booking section - Reserve your appointment">
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[90svh]">
           
           {/* Left: Form Area */}
@@ -1013,7 +1019,7 @@ export default function HomePage() {
       </section>
 
       {/* 6. CONTACT SECTION - Elegant Footer Prelude */}
-      <section id="contact" className="py-32 px-6 bg-deep-taupe text-ivory text-center relative overflow-hidden">
+      <section id="contact" className="py-32 px-6 bg-deep-taupe text-ivory text-center relative overflow-hidden" aria-label="Contact section - Get in touch with us">
         {/* Subtle background texture/noise could go here, using a radial gradient for now */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_100%)] pointer-events-none" />
         
@@ -1059,6 +1065,7 @@ export default function HomePage() {
       </section>
 
       <Footer />
+      </main>
     </div>
   );
 }

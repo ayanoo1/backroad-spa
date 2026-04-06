@@ -17,6 +17,15 @@ export default function Header() {
     { label: 'Contact', href: '#contact' },
   ];
 
+  // Skip to main content link
+  const skipToMainContent = () => {
+    const mainElement = document.querySelector('main');
+    if (mainElement) {
+      mainElement.focus();
+      mainElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const scrollToSection = (href: string) => {
     setMobileMenuOpen(false);
     // If we're on the home page, scroll directly
@@ -44,6 +53,15 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-ivory/95 backdrop-blur-sm border-b border-deep-taupe/10">
+      {/* Skip to main content link - visible on focus */}
+      <a
+        href="#main-content"
+        onClick={skipToMainContent}
+        className="absolute -top-12 left-0 bg-primary text-primary-foreground px-4 py-2 rounded focus:top-0 transition-all duration-200 z-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+      >
+        Skip to main content
+      </a>
+
       <div className="max-w-[100rem] mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
