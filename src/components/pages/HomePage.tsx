@@ -1,4 +1,3 @@
-// HPI 1.7-V
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -16,7 +15,6 @@ import { BaseCrudService } from '@/integrations';
 import { Testimonials, BookingRequests } from '@/entities';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { getLocalBusinessSchema, getBeautySalonSchema, getOrganizationSchema, getFAQSchema } from '@/lib/seo-config';
 
 // --- Constants & Assets ---
 const ASSETS = {
@@ -309,28 +307,33 @@ export default function HomePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    try {
-      await BaseCrudService.create('bookingrequests', {
-        _id: crypto.randomUUID(),
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        requestedService: formData.requestedService,
-        preferredDate: preferredDate?.toISOString(),
-        message: formData.message
-      });
+    if (preferredDate) {
+      setIsSubmitting(true);
       
-      setSubmitSuccess(true);
-      setFormData({ name: '', email: '', phone: '', requestedService: '', message: '' });
-      setPreferredDate(undefined);
-      
-      setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (error) {
-      console.error('Error submitting booking:', error);
-    } finally {
-      setIsSubmitting(false);
+      try {
+        await BaseCrudService.create('bookingrequests', {
+          _id: crypto.randomUUID(),
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          requestedService: formData.requestedService,
+          preferredDate: preferredDate instanceof Date ? preferredDate.toISOString() : String(preferredDate),
+          message: formData.message
+        });
+        
+        setSubmitSuccess(true);
+        setFormData({ name: '', email: '', phone: '', requestedService: '', message: '' });
+        setPreferredDate(undefined);
+        
+        setTimeout(() => setSubmitSuccess(false), 5000);
+      } catch (error) {
+        console.error('Error submitting booking:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      console.error('Preferred date is required');
     }
   };
 
@@ -339,10 +342,79 @@ export default function HomePage() {
   };
 
   // Structured data schemas
-  const localBusinessSchema = getLocalBusinessSchema();
-  const beautySalonSchema = getBeautySalonSchema();
-  const organizationSchema = getOrganizationSchema();
-  const faqSchema = getFAQSchema();
+  const localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': 'https://backroadbeautyandco.com',
+    name: 'Backroad Beauty & Co.',
+    image: 'https://static.wixstatic.com/media/488851_97a93575eb444db8b6de52281d7dd5c3~mv2.jpeg',
+    description: 'Luxury spa and self-care experience offering head spa rituals, facials, massages, waxing, and bridal packages.',
+    url: 'https://backroadbeautyandco.com',
+    telephone: '419-688-4000',
+    email: 'Danielle@backroadbeautyandco.com',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '82 Main St',
+      addressLocality: 'Butler',
+      addressRegion: 'OH',
+      postalCode: '44822',
+      addressCountry: 'US'
+    },
+    priceRange: '$',
+    areaServed: {
+      '@type': 'City',
+      name: 'Butler, Ohio'
+    }
+  };
+
+  const beautySalonSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BeautySalon',
+    '@id': 'https://backroadbeautyandco.com',
+    name: 'Backroad Beauty & Co.',
+    url: 'https://backroadbeautyandco.com',
+    telephone: '419-688-4000',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '82 Main St',
+      addressLocality: 'Butler',
+      addressRegion: 'OH',
+      postalCode: '44822',
+      addressCountry: 'US'
+    },
+    description: 'Luxury boutique spa offering head spa rituals, facials, massages, waxing, and bridal packages.',
+    image: 'https://static.wixstatic.com/media/488851_97a93575eb444db8b6de52281d7dd5c3~mv2.jpeg',
+    priceRange: '$'
+  };
+
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Backroad Beauty & Co.',
+    url: 'https://backroadbeautyandco.com',
+    description: 'Luxury spa and self-care experience in Butler, Ohio.',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Customer Service',
+      telephone: '419-688-4000',
+      email: 'Danielle@backroadbeautyandco.com'
+    }
+  };
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What services does Backroad Beauty & Co. offer?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We offer luxury spa services including head spa rituals, facials, massages, waxing, lash extensions, bridal packages, and more.'
+        }
+      }
+    ]
+  };
 
   return (
     <div className="min-h-screen bg-ivory selection:bg-blush-pink selection:text-deep-taupe overflow-clip font-paragraph">
