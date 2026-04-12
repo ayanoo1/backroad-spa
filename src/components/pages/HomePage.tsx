@@ -1,5 +1,6 @@
 // HPI 1.7-V
 import React, { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Image } from '@/components/ui/image';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ import { BaseCrudService } from '@/integrations';
 import { Testimonials, BookingRequests } from '@/entities';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { getLocalBusinessSchema, getBeautySalonSchema, getOrganizationSchema, getFAQSchema } from '@/lib/seo-config';
 
 // --- Constants & Assets ---
 const ASSETS = {
@@ -336,8 +338,50 @@ export default function HomePage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  // Structured data schemas
+  const localBusinessSchema = getLocalBusinessSchema();
+  const beautySalonSchema = getBeautySalonSchema();
+  const organizationSchema = getOrganizationSchema();
+  const faqSchema = getFAQSchema();
+
   return (
     <div className="min-h-screen bg-ivory selection:bg-blush-pink selection:text-deep-taupe overflow-clip font-paragraph">
+      <Helmet>
+        <title>Luxury Spa & Self-Care | Backroad Beauty & Co.</title>
+        <meta name="description" content="Modern rituals for the wild & polished. Premium spa treatments, head spa rituals, facials, and wellness services in Butler, Ohio." />
+        <meta name="keywords" content="spa, luxury spa, head spa, facials, massages, waxing, bridal packages, Butler Ohio" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#D4A0A7" />
+        <link rel="canonical" href="https://backroadbeautyandco.com/" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Luxury Spa & Self-Care | Backroad Beauty & Co." />
+        <meta property="og:description" content="Modern rituals for the wild & polished. Premium spa treatments, head spa rituals, facials, and wellness services in Butler, Ohio." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://backroadbeautyandco.com/" />
+        <meta property="og:image" content="https://static.wixstatic.com/media/488851_97a93575eb444db8b6de52281d7dd5c3~mv2.jpeg" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Luxury Spa & Self-Care | Backroad Beauty & Co." />
+        <meta name="twitter:description" content="Modern rituals for the wild & polished. Premium spa treatments, head spa rituals, facials, and wellness services in Butler, Ohio." />
+        <meta name="twitter:image" content="https://static.wixstatic.com/media/488851_97a93575eb444db8b6de52281d7dd5c3~mv2.jpeg" />
+        
+        {/* Structured Data - Multiple schemas for comprehensive SEO */}
+        <script type="application/ld+json">
+          {JSON.stringify(localBusinessSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(beautySalonSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
+
       <style>{`
         .clip-arch { clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%); }
         .clip-soft-arch { clip-path: ellipse(120% 100% at 50% 0%); }
@@ -390,8 +434,8 @@ export default function HomePage() {
               variants={fadeUp}
               className="font-heading text-5xl md:text-7xl lg:text-[6.5rem] leading-[1.1] text-deep-taupe mb-8 tracking-tight"
             >
-              Modern Rituals for the <br className="hidden md:block" />
-              <span className="italic font-light text-primary">Wild & Polished</span>
+              Luxury Spa & Wellness in Butler, Ohio <br className="hidden md:block" />
+              <span className="italic font-light text-primary">Modern Rituals for the Wild & Polished</span>
             </motion.h1>
             
             <motion.p 

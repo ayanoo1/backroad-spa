@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 
 const fadeUp = {
@@ -18,6 +19,19 @@ const staggerContainer = {
 export default function AccessibilityStatementPage() {
   return (
     <div className="min-h-screen bg-ivory font-paragraph">
+      <Helmet>
+        <title>Accessibility Statement | Backroad Beauty & Co.</title>
+        <meta name="description" content="Learn about our commitment to web accessibility and how to contact us with accessibility concerns." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="canonical" href="https://backroadbeautyandco.com/accessibility" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Accessibility Statement | Backroad Beauty & Co." />
+        <meta property="og:description" content="Learn about our commitment to web accessibility and how to contact us with accessibility concerns." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://backroadbeautyandco.com/accessibility" />
+      </Helmet>
+
       <Header />
       
       <main id="main-content" className="focus:outline-none pt-32 pb-20" tabIndex={-1}>

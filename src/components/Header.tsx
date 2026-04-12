@@ -11,10 +11,10 @@ export default function Header() {
 
   const navLinks = [
     { label: 'Home', href: '#home' },
-    { label: 'About', href: '#about' },
-    { label: 'Services', href: '#services' },
-    { label: 'Testimonials', href: '#testimonials' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'About Our Spa', href: '#about' },
+    { label: 'Services & Treatments', href: '#services' },
+    { label: 'Client Testimonials', href: '#testimonials' },
+    { label: 'Book Your Appointment', href: '#contact' },
   ];
 
   // Skip to main content link

@@ -28,10 +28,10 @@ export default function Footer() {
             <nav className="space-y-3" aria-label="Footer navigation">
               {[
                 { label: 'Home', href: '#home' },
-                { label: 'About', href: '#about' },
-                { label: 'Services', href: '#services' },
-                { label: 'Testimonials', href: '#testimonials' },
-                { label: 'Book Now', href: '#booking' },
+                { label: 'About Our Spa', href: '#about' },
+                { label: 'Services & Treatments', href: '#services' },
+                { label: 'Client Testimonials', href: '#testimonials' },
+                { label: 'Book Your Appointment', href: '#booking' },
               ].map((link) => (
                 <button
                   key={link.href}
