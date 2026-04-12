@@ -1,5 +1,6 @@
 import { MemberProvider } from '@/integrations';
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { ScrollToTop } from '@/lib/scroll-to-top';
 import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import HomePage from '@/components/pages/HomePage';
@@ -47,8 +48,10 @@ const router = createBrowserRouter([
 
 export default function AppRouter() {
   return (
-    <MemberProvider>
-      <RouterProvider router={router} />
-    </MemberProvider>
+    <HelmetProvider>
+      <MemberProvider>
+        <RouterProvider router={router} />
+      </MemberProvider>
+    </HelmetProvider>
   );
 }
