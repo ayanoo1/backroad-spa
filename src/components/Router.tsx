@@ -5,13 +5,17 @@ import { ScrollToTop } from '@/lib/scroll-to-top';
 import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 import HomePage from '@/components/pages/HomePage';
 import AccessibilityStatementPage from '@/components/pages/AccessibilityStatementPage';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
-// Layout component that includes ScrollToTop
+// Layout component that includes Header, ScrollToTop, and Footer
 function Layout() {
   return (
     <>
       <ScrollToTop />
+      <Header />
       <Outlet />
+      <Footer />
     </>
   );
 }

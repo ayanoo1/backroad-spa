@@ -13,8 +13,6 @@ import { CalendarIcon, Star, ArrowRight, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { BaseCrudService } from '@/integrations';
 import { Testimonials, BookingRequests } from '@/entities';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 // --- Constants & Assets ---
 const ASSETS = {
@@ -469,7 +467,6 @@ export default function HomePage() {
         }
       `}</style>
 
-      <Header />
       <main id="main-content" className="focus:outline-none" tabIndex={-1}>
       
       {/* 1. HERO SECTION - Immersive, Parallax, Elegant */}
@@ -1180,7 +1177,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Footer />
       </main>
     </div>
   );
